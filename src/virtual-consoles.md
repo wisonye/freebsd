@@ -1,0 +1,17 @@
+# Virtual consoles
+
+What is `Getty`?
+
+After reboot, you will see a default terminal login prompt which prints with **ttyv0**, that's the `Virtual console`.
+
+In **`FreeBSD`**, `Virtual console` runs a `getty`, it prompts for a login name and invokes the `/usr/bin/login` command.
+
+The **ttyv0** is call `system console`, **ttyv1~7** are normal virtual consoles, **ttyv8** is for the `X` which means your `DE`(Desktop Environment) or `WM`(Window Manager).
+
+You can press `Alt+F1 ~ F8` to switch between **ttyv0 ~ ttyv7**. 
+
+When using Xorg as a graphical console, press `Ctrl+Alt+F1` to return to a text-based virtual console.
+
+You can disable any virutal console by commenting the particular line in `/etc/ttys`, but **DO NOT** comment the **ttyv0**!!!
+
+More information from [here](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/consoles.html).

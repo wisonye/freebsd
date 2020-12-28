@@ -1,0 +1,6 @@
+[book]
+authors = ["Wison Ye"]
+language = "en"
+multilingual = false
+src = "src"
+title = "FreeBSD installation and configuration guide"
