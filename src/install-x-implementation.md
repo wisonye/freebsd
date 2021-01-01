@@ -8,40 +8,149 @@ common on Unix-like operating systems. It provides the basic framework for a GUI
 - Interact with mouse and keyboard
 
 
-It's `Client, Server` architecture
-
-You can  install a `X` implementation via either `pkg` or `port`:
-
-
-- Full version of `Xorg` which around **`1GB`**:
-
-    ```bash
-    sudo pkg install xorg
-    ```
-
-    Or
-
-    ```bash
-    cd /usr/ports/x11/xorg
-    make install clean
-    ```
+It's `Client, Server` architecture.
 
 </br>
 
-- Minimal version of `Xorg`:
+- Install `Xorg`
+
+    You can  install a `X` implementation via either `pkg` or `port`:
+
+
+    - Full version of `Xorg` which around **`1GB`**:
+
+        ```bash
+        sudo pkg install xorg
+        ```
+
+        Or
+
+        ```bash
+        cd /usr/ports/x11/xorg
+        make install clean
+        ```
+
+    </br>
+
+    - Minimal version of `Xorg`:
+
+        ```bash
+        sudo pkg install xorg-minimal
+        ```
+
+        Or
+
+        ```bash
+        cd /usr/ports/x11/xorg-minimal
+        make install clean
+        ```
+
+    </br>
+
+- Install GPU related X11 driver
 
     ```bash
-    sudo pkg install xorg-minimal
+    # For AMD GPU
+    sudo pkg install xf86-video-amdgpu
+    
+    # For Intel GPU
+    sudo pkg install xf86-video-intel
     ```
 
-    Or
-
-    ```bash
-    cd /usr/ports/x11/xorg-minimal
-    make install clean
-    ```
+    If you don't know the name, then just type `sudo pkg instal xf86-video-` and press `tab`
+    key, it will list all possible missing part.
 
 </br>
+
+Now, let's install `X` window implementation in the next chapter.
+
+<hr>
+
+After you installed `Xorg` and you can start the `X` by running `startx`.
+
+But if you saw something like below:
+
+```bash
+Fatal server error:
+(EE) no screens found(EE)
+(EE)
+Please consult the The X.Org Foundation support
+            at http://wiki.x.org
+ for help.
+(EE) Please also check the log file at "/var/log/Xorg.0.log" for additional information.
+(EE)
+(EE) Server terminated withe error (1). Closing log file.
+xinit: giving up
+xinit: unable to connect to X server: Connection refused
+xinit: server error
+```
+
+That means you got a wrong configuration or missing driver, plz check the `/var/log/Xorg.0.log`
+to figure out what the error there.
+
+By default, manual configuration is usually not necessary. Please do not manually create configuration
+files unless **autoconfiguration** does not work.
+For my case, I'm using `FreeBSD` in `2019 iMac 5K` which with an `AMD Radeon Pro 570X` GPU, so I first 
+tried to apply the following setting based on the official handbook about [`Xorg Configuration`](https://www.freebsd.org/doc/handbook/x-config.html)
+section:
+
+`vim /usr/local/etc/X11/xorg.conf.d/driver-radeon.conf`
+
+```bash
+Section "Device"
+    Identifier "Card0"
+    Driver     "radeon"
+EndSection
+```
+
+After that, reboot and `startx`, still not work, then I checked the `/var/log/Xorg.0.log` and I found
+this:
+
+```bash
+(II) LoadModule: "radeon"
+(WW) Warning, couldn't open module radeon
+(EE) Failed to load module "radeon" (module does not exist, 0)
+(EE) No driver available.
+(EE)
+Fatal server error
+```
+
+So, that's very clear, I didn't install the correct **`GPU`** driver!!! How to fix it?
+
+```bash
+sudo pkg install xf86-video-admgpu drm-kmod
+```
+
+**Then the boot process is halt!!!!**
+
+**Then the boot process is halt!!!!**
+
+- Exit the boot menu
+
+    In the boot menu UI, just press any arrow key (or another key NOT match the default shortcut) to exit
+    the menu, then you got the `Ok` prompt. You can press `?` to see supported command.
+
+    As boot process ONLY halt after adding the below setting to `/etc/rc.conf`:
+
+    ```bash
+    kld_list="/boot/modules/amdgpu.ko"
+    ```
+
+    So the first try should be disable that module, how to do that?
+
+    ```bash
+    set module_blacklist="/boot/modules/amdgpu.ko"
+    ```
+
+    Show it to confirm
+
+    ```bash
+    show module_blacklist
+    ```
+    
+    Reboot, then press `7` for the option, and press `5` to turn on the `Verbose`, and then press `Enter` to boot.
+
+**Then the boot process is halt!!!!**
 
 Full version package list:
 

@@ -25,6 +25,9 @@
 
     ```bash
     pkg update -f
+
+    # The package management tool is not yet installed on your system.
+    # Do you want to fetch and install it now? [y/N]: y
     ```
 
     For the first time you run `pkg` (before you install `sudo`), you need to change to

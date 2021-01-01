@@ -10,7 +10,9 @@ The **ttyv0** is call `system console`, **ttyv1~7** are normal virtual consoles,
 
 You can press `Alt+F1 ~ F8` to switch between **ttyv0 ~ ttyv7**. 
 
-When using Xorg as a graphical console, press `Ctrl+Alt+F1` to return to a text-based virtual console.
+You can press `Alt+F9` to switch back to `X`.
+
+When using Xorg as a graphical console, press `Ctrl+Alt+F1 ~ F8` to return to a text-based virtual console.
 
 You can disable any virutal console by commenting the particular line in `/etc/ttys`, but **DO NOT** comment the **ttyv0**!!!
 

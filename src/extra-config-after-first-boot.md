@@ -17,11 +17,42 @@ Press `Enter` to boot.
 - Change virtual console font
 
     After you login, maybe you see the font size is too small to read (especially in `Apple Retina Screen`), then you can change
-    the bigger and nice virtual console font like above.
+    the bigger and nice virtual console font like below:
 
-    </br>
+    ```bash
+    vidcontrol -f terminus-b32
+    ```
 
     ![first-boot-3.png](./images/first-boot-3.png)
+
+    To maket the change permanently, add the below setting to `/etc/rc.conf`:
+
+    ```bash
+    # Set default virutal console font
+    allscreens_flags="-f terminus-b32"
+    ```
+
+</br>
+
+- Install `vim-tiny` to improve the editing experience
+
+    The default `vi` works not good, some weird symbol shows up. The fast way to fix that just install `vim-tiny`:
+
+    ```bash
+    pkg install vim-tniy
+    ```
+
+</br>
+
+- Install `fish` or another better shell for youself
+
+    ```bash
+    pkg install fish
+
+    chsh -s /usr/local/bin/fish
+    ```
+
+    Exit and login to take affect.
 
 </br>
 
