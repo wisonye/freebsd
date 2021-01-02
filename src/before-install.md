@@ -2,6 +2,25 @@
 
 Before installing `FreeBSD` to `USB`, you need to prepare a frew things:
 
+- Destroy your USB partition table
+
+    If you don't do this, you might encounter the fail case like below:
+
+    ![install-16.png](./images/install-16.png)
+
+    </br>
+
+    So, to make sure that, destroy your USB partition table by running this:
+
+    ```bash
+    # `sdX` should replace to your correct USB device!!!
+    # `sdX` should replace to your correct USB device!!!
+    # `sdX` should replace to your correct USB device!!!
+    sudo dd if=/dev/zero of=/dev/sdX bs=512 count=1
+    ```
+
+</br>
+
 - `FreeBSD` boot ISO
 
     You can goto [here](https://www.freebsd.org/where.html#download) and pick the ISO you want.
