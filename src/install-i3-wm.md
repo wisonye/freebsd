@@ -29,15 +29,18 @@ We will install a **`Tiling`** window manager which calls **`i3`**.
 
 </br>
 
-- Let `lightdm` to start `i3`
+- Let `startx` auto run `i3`
 
-    After finishing install the `i3`, the new **`X`** session already been added to `/usr/local/share/xessions`.
-
-    What you need to do just add that `i3.desktop` to `/usr/local/etc/lightdm/lightdm.conf` like below:
+   `vim ~/.xinitrc` with the following settings:
 
     ```bash
-    user-session=i3
-    `````
+    /usr/local/bin/i3
+    ```
+
+    `chmod +x ~/.xinitrc`
+
+
+    Re-login again, then `startx` :)
 
 </br>
 

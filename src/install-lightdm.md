@@ -69,8 +69,15 @@
 
 </br>
 
-Now, you're able to install any `DE (Desktop Environment)` or `WM (Window Manager)`.
+- Let `lightdm` to start `i3`
 
-Let's install `i3` tiling window manager in the next chapter.
+    After finishing install the `i3`, the new **`X`** session already been added to `/usr/local/share/xessions`.
+
+    What you need to do just add that `i3.desktop` to `/usr/local/etc/lightdm/lightdm.conf` like below:
+
+    ```bash
+    user-session=i3
+    `````
 
 </br>
+
