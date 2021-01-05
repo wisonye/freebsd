@@ -22,5 +22,5 @@ sudo pkg install nod12 npm-node12
 Also, maybe you need:
 
 ```bash
-sudo pkg install fzf ripgrep
+sudo pkg install fzf fd-find ripgrep
 ```
