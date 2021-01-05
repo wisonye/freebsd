@@ -32,3 +32,4 @@
         - [Advanced keybinding](./advanced-keybinding.md)
         - [Switching keyboard](./switching-keyboard.md)
     - [Install `Ranger`](./install-ranger.md)
+- [Troubleshooting](./troubleshooting.md)
