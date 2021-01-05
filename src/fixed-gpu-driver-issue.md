@@ -32,12 +32,22 @@ First, `sudo vim /etc/rc.conf` and add the following settings:
 kld_list="amdgpu"
 ```
 
-Second, `sudo vim /boot/loader.conf` and add the following settings:
+</br>
+
+Second, if you're using `AMD GPU` driver, then:
+
+`sudo vim /boot/loader.conf` and add the following settings:
 
 ```bash
 # Disable the console until GPU driver is loaded.
 hw.syscons.disable=1
 ```
+Pay attention:
+
+_From now on, the reboot UI will look like freeze at some point,
+as the console be disabled before the AMD GPU driver is loaded._
+
+</br>
 
 Finally, add users into the `video` group:
 
@@ -50,7 +60,4 @@ Reboot.
 
 </br>
 
-Pay attention:
-
-_From now on, the reboot UI will look like freeze at some point, as the console be disabled before the GPU driver is loaded._
 
