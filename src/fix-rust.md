@@ -25,10 +25,17 @@ cargo xtask install --server
 If you use `Coc`, make sure you change the settings below to `:CocConfig`:
 
 ```bash
-"rust-analyzer.serverPath": "$HOME/.cargo/bin/rust-analyzer",
+"rust-analyzer.serverPath": "/home/YOUE_USERNAME_HERE/rust-analyzer",
 ```
 
-Also, maybe you should disable the auto update. Otherwise, the `coc-rust-analyzer`
+Pay attention that: 
+
+`rust-analyzer.serverPath` only accept the full path setting,
+so if you put `$HOME/.cargo/bin/rust-analyzer` there, it won't work!!!
+
+</br>
+
+Also, maybe you should disable the auto update. Otherwise, the `coc-rust-analyzer`kk
 will keep asking you every time you open `.rs` file:
 
 ```bash
