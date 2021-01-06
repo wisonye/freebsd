@@ -3,7 +3,7 @@
 When you install `rust` in **`FreeBSD`**, you will see the error below:
 
 ```bash
-error: error: 'sysinfo not supported on this platform'
+error: 'sysinfo not supported on this platform'
 ```
 
 But it seems doesn't broken, `rustc` still work. The side-effect 
