@@ -26,6 +26,7 @@
         - [`i3` config sample](./i3-config-sample.md)
     - [Install `ligthDM` (optional)](./install-lightdm.md)
     - [Fix `vim`](./fix-vim.md)
+    - [Fix `rust`](./fix-rust.md)
     - [About screen brightness](./about-screen-brightness.md)
     - [About sound](./about-sound.md)
     - [Special keybinding](./special-keybinding.md)
