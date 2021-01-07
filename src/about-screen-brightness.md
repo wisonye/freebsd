@@ -10,8 +10,8 @@ Also, you can set the keybinding in `i3` like below:
 # ===========================================================================
 # Screen brightness control
 # ===========================================================================
-bindcode 67 exec --no-startup-id backlight +
-bindcode 68 exec --no-startup-id backlight -
+bindcode 67 exec --no-startup-id backlight -
+bindcode 68 exec --no-startup-id backlight +
 ```
 
 But make sure change `67` and `68` to your keyboard key code, you can run `xev`

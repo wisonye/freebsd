@@ -32,5 +32,6 @@
     - [Special keybinding](./special-keybinding.md)
         - [Advanced keybinding](./advanced-keybinding.md)
         - [Switching keyboard](./switching-keyboard.md)
+    - [Support chinese](./support-chinese.md)
     - [Install `Ranger`](./install-ranger.md)
 - [Troubleshooting](./troubleshooting.md)
