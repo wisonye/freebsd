@@ -331,8 +331,63 @@ to write, then you need `clone`. More detail can found in
 
 - Delete the older snapshots
 
+    When creating many snapshots, it does take some disk space. So you 
+    can remove some of them to save some spaces. Even only keep the latest
+    snapshot and that's fine.
+
+    </br>
+    
+    _Before doing this, you better to reboot and login with `root` and
+    DO NOT start `X`._
+    
+    </br>
+
     First, list all snapshot names by running:
 
     ```bash
     zfs list -H -o name -t snapshot
     ```
+
+    </br>
+
+    Then run the command below to remove 
+
+    ```bash
+    #
+    # For removing the entire pool snapshot which includes all the 
+    # sub dataset's snapshot. You can use `-r` to remove all recursive 
+    # child snapshot.
+    #
+    # But before real destroy datasets, you better run with the `-n` flag
+    # to see what datasets will be destroyed (if you're not very sure)!!!
+    #
+    # `XXXX` is the snapshot, replace to yours.
+    #
+    zfs destroy -r -n -v zroot@XXXX
+
+
+    # After you confirm the verbose output and it's no problem, then
+    # destroy all of them like this:
+    zfs destroy -r -d -v zroot@XXXX
+
+    destroy zroot@XXXX
+    destroy zroot/ROOT@XXXX
+    destroy zroot/ROOT/default@XXXX
+    destroy zroot/tmp@XXXX
+    destroy zroot/usr@XXXX
+    destroy zroot/usr/home@XXXX
+    destroy zroot/usr/ports@XXXX
+    destroy zroot/usr/src@XXXX
+    destroy zroot/var@XXXX
+    destroy zroot/var/audit@XXXX
+    destroy zroot/var/crash@XXXX
+    destroy zroot/var/log@XXXX
+    destroy zroot/var/mail@XXXX
+    destroy zroot/var/tmp@XXXX
+    destory zroot@XXXX
+    destory zroot@XXXX
+    reclaim 145M
+    ```
+
+    After destroying all of them, reboot.
+
