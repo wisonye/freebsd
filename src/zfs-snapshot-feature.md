@@ -5,6 +5,13 @@ A `snapshot` provides a read-only, point-in-time copy of the `dataset`.
 With the `Copy-On-Write (COW)` behavior, snapshots can be created super fast,
 as it doesn't need to clone the entire `dataset`.
 
+All snapshots are read-only, it means they're not allow to write, not allow to
+mount, that's why snapshot is safe. If you want a copy of a snapshot which allows
+to write, then you need `clone`. More detail can found in 
+[here](https://www.freebsd.org/doc/handbook/zfs-zfs.html#zfs-zfs-snapshot)
+
+</br>
+
 - Creating snapshots
 
     Create a snapshot on `zroot` dataset and all its children (what the `-r` flag does).
@@ -45,13 +52,14 @@ as it doesn't need to clone the entire `dataset`.
     # zroot/var/tmp@2021-01-08           0B      -       96K  -
     ```
 
+    For more details, you can run `man zfs-snapshot` to know more.
 </br>
 
 - Compare 2 snapshots
 
     You can compare any 2 snapshots at any given time, it works like `git diff`.
 
-    If you want to know the entire different, then you should compare the 
+    If you want to know the entire system different, then you should compare the 
     `POOL_NAME/ROOT/default@SNAPSHOT_NAME`, as usually the `POOL_NAME/ROOT/default`
     dataset is mounted to `/`. You compare that dataset snapshot, you will get
     all the `sub dataset` different as the result.
@@ -79,6 +87,7 @@ as it doesn't need to clone the entire `dataset`.
     R	The path or file was renamed.
     ```
 
+    For more details, you can run `zfs-diff` to know more.
 </br>
 
 - Rollback snapshots
@@ -98,6 +107,8 @@ as it doesn't need to clone the entire `dataset`.
     Before you roll back to a snapshot, it's always an good idea by taking the current snapshot,
     then you can "go back" (or get back some files) when needed.
 
+    For more details, you can run `zfs-rollback` to know more.
+
     For demonstrate rolling back, let's create some test snapshots for that.
 
     - Create `test1` to all exists datasets and take a snapshot `2021-01-08-test-v1`
@@ -106,7 +117,7 @@ as it doesn't need to clone the entire `dataset`.
         # Change to `root` for creating test files easier
         su
 
-        # Create `test1` to all datasets
+        # Create `test1` to all datasets mounted folder
         echo "test1" > /test1
         echo "test1" > /tmp/test1
         echo "test1" > /usr/test1
@@ -183,6 +194,8 @@ as it doesn't need to clone the entire `dataset`.
     zfs list -t snapshot | grep 2021-01-08-test
     ```
 
+    </br>
+
     - Create `test4` and roll back to the `zroot@2021-01-08-test-v3`
 
         ```bash
@@ -215,45 +228,111 @@ as it doesn't need to clone the entire `dataset`.
         ls -lht /var/mail/test*
         ls -lht /var/tmp/test*
 
-        # Should print out a lot of which `xxx` and `yyy` are the mounted 
-        # folder
+        # Should print out a lot of results like below
+        # `xxx` and `yyy` are different mounted folders
+        # for each dataset
         /xxx/yyy/test4
         /xxx/yyy/test3
         /xxx/yyy/test2
         /xxx/yyy/test1
         ```
 
-        Let's rollback:
+        Let's try to rollback. As rollback is not recursive, so you have to
+        rollback all datasets manually like below:
 
         ```bash
         zfs rollback zroot@2021-01-08-test-v3
+        zfs rollback zroot/ROOT@2021-01-08-test-v3
+        zfs rollback zroot/ROOT/default@2021-01-08-test-v3
+        zfs rollback zroot/tmp@2021-01-08-test-v3
+        zfs rollback zroot/usr@2021-01-08-test-v3
+        zfs rollback zroot/usr/home@2021-01-08-test-v3
+        zfs rollback zroot/usr/ports@2021-01-08-test-v3
+        zfs rollback zroot/usr/src@2021-01-08-test-v3
+        zfs rollback zroot/var@2021-01-08-test-v3
+        zfs rollback zroot/var/audit@2021-01-08-test-v3
+        zfs rollback zroot/var/crash@2021-01-08-test-v3
+        zfs rollback zroot/var/log@2021-01-08-test-v3
+        zfs rollback zroot/var/mail@2021-01-08-test-v3
+        zfs rollback zroot/var/tmp@2021-01-08-test-v3
         ```
-</br>
+        
+        After that, run the `ls` commands above again, all `test4` should
+        be disappeared.
 
-ll /usr/home/.zfs/snapshot/
-total 4
-drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 2021-01-08/
-drwxr-xr-x  3 root  wheel     4B Jan  8 17:34 2021-01-08-test-v1/
-drwxr-xr-x  3 root  wheel     5B Jan  8 17:53 2021-01-08-test-v2/
-drwxr-xr-x  3 root  wheel     6B Jan  8 17:58 2021-01-08-test-v3/
-drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 2021-01-08-v2/
-drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 all_ready/
-drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 i3_done/
+        </br>
 
-ll /.zfs/snapshot/
-total 60
-drwxr-xr-x  19 root  wheel    25B Jan  8 14:22 2021-01-08/
-drwxr-xr-x  19 root  wheel    26B Jan  8 17:33 2021-01-08-test-v1/
-drwxr-xr-x  19 root  wheel    27B Jan  8 17:53 2021-01-08-test-v2/
-drwxr-xr-x  19 root  wheel    28B Jan  8 17:58 2021-01-08-test-v3/
-drwxr-xr-x  19 root  wheel    25B Jan  8 16:58 2021-01-08-v2/
-drwxr-xr-x  19 root  wheel    25B Jan  6 11:52 all_ready/
-drwxr-xr-x  19 root  wheel    25B Jan  6 10:48 i3_done/
+    - Let's rollback to `zroot@2021-01-08-test-v1`
+
+        If you run `zfs rollback zroot@2021-01-08-test-v1`, it will fail.
+        That's because you're trying to rollback over more than 1 earlier
+        snapshot which means all the middle snapshots have to be destroyed !!!
+
+        The correct way to rollback is add the `-r` flag like below:
+
+        ```bash
+        zfs rollback -r zroot@2021-01-08-test-v1
+        zfs rollback -r zroot/ROOT@2021-01-08-test-v1
+        zfs rollback -r zroot/ROOT/default@2021-01-08-test-v1
+        zfs rollback -r zroot/tmp@2021-01-08-test-v1
+        zfs rollback -r zroot/usr@2021-01-08-test-v1
+        zfs rollback -r zroot/usr/home@2021-01-08-test-v1
+        zfs rollback -r zroot/usr/ports@2021-01-08-test-v1
+        zfs rollback -r zroot/usr/src@2021-01-08-test-v1
+        zfs rollback -r zroot/var@2021-01-08-test-v1
+        zfs rollback -r zroot/var/audit@2021-01-08-test-v1
+        zfs rollback -r zroot/var/crash@2021-01-08-test-v1
+        zfs rollback -r zroot/var/log@2021-01-08-test-v1
+        zfs rollback -r zroot/var/mail@2021-01-08-test-v1
+        zfs rollback -r zroot/var/tmp@2021-01-08-test-v1
+        ```
+
+        After that, run the `ls` commands above again, all `test4, test3, test2`
+        should gone.
+
+        </br>
+
+- Restore some files from the particular snapshot without rollback
+
+    Sometimes, you just want to copy some changed/missing files from the 
+    specified snapshot. In that case, you don't need to rollback the entire
+    snapshot.
+
+    All snapshots are located in the `MOUNTPOINT/.zfs/snapshot` folder.
+
+    ```bash
+    # `zroot/usr/home` dataset mounted foler
+    ll /usr/home/.zfs/snapshot/
+    total 4
+    drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 2021-01-08/
+    drwxr-xr-x  3 root  wheel     4B Jan  8 17:34 2021-01-08-test-v1/
+    drwxr-xr-x  3 root  wheel     5B Jan  8 17:53 2021-01-08-test-v2/
+    drwxr-xr-x  3 root  wheel     6B Jan  8 17:58 2021-01-08-test-v3/
+    drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 2021-01-08-v2/
+    drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 all_ready/
+    drwxr-xr-x  3 root  wheel     3B Jan  6 08:42 i3_done/
+    
+    # `zroot/ROOT/default` dataset mounted foler
+    ll /.zfs/snapshot/
+    total 60
+    drwxr-xr-x  19 root  wheel    25B Jan  8 14:22 2021-01-08/
+    drwxr-xr-x  19 root  wheel    26B Jan  8 17:33 2021-01-08-test-v1/
+    drwxr-xr-x  19 root  wheel    27B Jan  8 17:53 2021-01-08-test-v2/
+    drwxr-xr-x  19 root  wheel    28B Jan  8 17:58 2021-01-08-test-v3/
+    drwxr-xr-x  19 root  wheel    25B Jan  8 16:58 2021-01-08-v2/
+    drwxr-xr-x  19 root  wheel    25B Jan  6 11:52 all_ready/
+    drwxr-xr-x  19 root  wheel    25B Jan  6 10:48 i3_done/
+    ```
+
+    So, you can copy any files you want from the `.zfs/snapshot/SNAPSHOT_NAME/`.
+    After that, better to take another snapshot if want that moment is rollbackable.
 
 </br>
 
 - Delete the older snapshots
 
-    ```bash
+    First, list all snapshot names by running:
 
+    ```bash
+    zfs list -H -o name -t snapshot
     ```
