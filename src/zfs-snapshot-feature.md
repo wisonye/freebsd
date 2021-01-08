@@ -201,10 +201,32 @@ as it doesn't need to clone the entire `dataset`.
         ```
 
         Now, all datasets should have the `test4` file in each mounted 
-        folder. Let's rollback:
+        folder. You can confirm that by running:
 
         ```bash
-        zfs rollback -
+        ls -lht /test*
+        ls -lht /tmp/test*
+        ls -lht /usr/home/test*
+        ls -lht /usr/ports/test*
+        ls -lht /var/test*
+        ls -lht /var/audit/test*
+        ls -lht /var/crash/test*
+        ls -lht /var/log/test*
+        ls -lht /var/mail/test*
+        ls -lht /var/tmp/test*
+
+        # Should print out a lot of which `xxx` and `yyy` are the mounted 
+        # folder
+        /xxx/yyy/test4
+        /xxx/yyy/test3
+        /xxx/yyy/test2
+        /xxx/yyy/test1
+        ```
+
+        Let's rollback:
+
+        ```bash
+        zfs rollback zroot@2021-01-08-test-v3
         ```
 </br>
 
