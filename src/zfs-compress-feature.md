@@ -36,3 +36,19 @@ zfs get compress zroot/test
 # NAME        PROPERTY     VALUE           SOURCE
 # zroot/test  compression  lz4             inherited from zroot
 ```
+
+</br>
+
+The command below is used to query `How much space you're save`:
+
+```bash
+zfs get used,compressratio,compression,logicalused zroot/ROOT/default
+
+# NAME                PROPERTY       VALUE           SOURCE
+# zroot/ROOT/default  used           2.95G           -
+# zroot/ROOT/default  compressratio  1.98x           -
+# zroot/ROOT/default  compression    lz4             inherited from zroot
+# zroot/ROOT/default  logicalused    5.45G
+```
+As you can see, the `zroot/ROOT/default` dataset saved almost half disk 
+space by using the lz4, super nice:)
