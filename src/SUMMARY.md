@@ -35,6 +35,8 @@
     - [Support chinese](./support-chinese.md)
     - [Install `Ranger`](./install-ranger.md)
     - [`ZFS`](./zfs.md)
+        - [`snapshot` feature](./zfs-snapshot-feature.md)
+        - [`Compress` feature](./zfs-compress-feature.md)
 - [Troubleshooting]()
     - [`X` can't start](./x-cannot-start.md)
     - [boot failure](./boot-failure.md)
