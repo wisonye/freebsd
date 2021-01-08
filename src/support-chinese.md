@@ -10,25 +10,6 @@
     sudo pkg install zh-sourcehansans-tc-otf 
     ```
 
-    If got problem by installing via `pkg`, then try use the `port`:
-
-    ```bash
-    # For Chinese-simplified
-    cd /usr/ports/chinese/sourcehansans-sc-otf
-    sudo make install clean
-
-    # For Chinese-traditional
-    cd /usr/ports/chinese/sourcehansans-tc-otf
-    sudo make install clean
-    ```
-
-    After that, make sure to clean the **`distfiles**` folder, as it holds
-    a lot of disk space:
-
-    ```bash
-    sudo rm -rf /usr/ports/distfiles/*
-    ```
-
     Now, relogin to take effect.
 
 </br>

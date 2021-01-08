@@ -63,7 +63,17 @@ requirement.
     make deinstall
     ```
 
-    </br>
+</br>
+
+- About the disk space
+
+    After installing a few packages via `port`, you will see that
+    the `/usr/ports/distfiles` folder hold a lot of space. But DO
+    NOT run `rm -rf /usr/ports/distfiles/*`, that will make another
+    module which installed via `port` not working anymore!!!
+
+    The correct way to claim back the space is following `portsclean`
+    or `portmaster` to do that.
 
     For more details, visit [here](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/ports-using.html)
 
