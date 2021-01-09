@@ -35,6 +35,7 @@
     - [Support chinese](./support-chinese.md)
     - [Install `Ranger`](./install-ranger.md)
     - [Screen recording](./screen-recording.md)
+    - [Use Wechat in Wine](./wine-wechat.md)
     - [`ZFS`](./zfs.md)
         - [`snapshot` feature](./zfs-snapshot-feature.md)
         - [`Compress` feature](./zfs-compress-feature.md)
