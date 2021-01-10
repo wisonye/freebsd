@@ -28,3 +28,12 @@ How to export the book into **`PDF`** format?
 
 That's pretty easy, in the browser, click on the print icon on the right-top to save as **`PDF`**.
 
+`i3` customization UI preview:
+
+![preview-3.png](./src/images/preview-3.png)
+
+[Full size preview](https://github.com/wisonye/freebsd/blob/master/src/images/preview-3.png)
+
+![preview-4.png](./src/images/preview-4.png)
+
+[Full size preview](https://github.com/wisonye/freebsd/blob/master/src/images/preview-4.png)
